@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UCHUMI Sacco Portal</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fff5f8;--card:#fff;--ink:#2b1d2a;--mute:#7a6677;--pink:#e8206a;--pink2:#ffd3e2;--line:#f3d6e2;--ok:#1f9d6b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1220;--card:#2a1b2e;--ink:#fbeaf3;--mute:#b9a0b3;--pink:#ff7aa9;--pink2:#4a2646;--line:#43284a;--ok:#4cd8a0}}
+:root[data-theme="dark"]{--bg:#1d1220;--card:#2a1b2e;--ink:#fbeaf3;--mute:#b9a0b3;--pink:#ff7aa9;--pink2:#4a2646;--line:#43284a;--ok:#4cd8a0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh;overflow-x:hidden}
+.petal{position:fixed;top:-40px;line-height:1;animation:fall linear infinite;z-index:0;opacity:.85;pointer-events:none;user-select:none}
+@keyframes fall{to{transform:translate(60px,110vh) rotate(540deg)}}
+main{position:relative;z-index:1;max-width:880px;margin:auto;padding:16px}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
+h1{font-size:1.4rem;margin:0;color:var(--pink)}
+nav button,.btn{background:var(--card);border:2px solid var(--pink);color:var(--pink);border-radius:999px;padding:8px 16px;font-weight:600;cursor:pointer}
+nav button.on,.btn{background:var(--pink);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:14px 0;box-shadow:0 4px 14px rgba(232,88,141,.08)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.stat small{color:var(--mute);display:block}.stat b{font-size:1.4rem}
+.hero{display:flex;gap:12px;align-items:center}
+.bubble{background:var(--pink2);border-radius:16px;padding:10px 14px;position:relative;font-size:.95rem}
+.mascot{animation:bob 3s ease-in-out infinite;flex:none}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.blink{animation:blink 4s infinite;transform-origin:center}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+input,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1rem;margin:4px 0 10px}
+label{font-size:.85rem;color:var(--mute)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}td,th{padding:8px 4px;border-bottom:1px solid var(--line);text-align:left}
+.scroll{overflow-x:auto}.ok{color:var(--ok)}.note{font-size:.8rem;color:var(--mute)}
+.hide{display:none}
+.scene{border-radius:22px;overflow:hidden;background:linear-gradient(#bfe6ff,#ffeef5);border:1px solid var(--line);margin-top:14px}
+.scene svg{display:block;width:100%;height:auto}
+.fruit{fill:#ffc83d;stroke:#e09a00;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:glow 2.4s ease-in-out infinite}
+@keyframes glow{50%{fill:#fff08a;transform:scale(1.18)}}
+.pick{animation:bob 2s ease-in-out infinite}
+.drop{animation:drop 4s ease-in infinite}
+@keyframes drop{0%{transform:translateY(0);opacity:1}80%{opacity:1}100%{transform:translateY(190px);opacity:0}}
+.canopy{transform-box:fill-box;transform-origin:50% 100%;animation:sway 6s ease-in-out infinite}
+@keyframes sway{50%{transform:rotate(1.2deg)}}
+.doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:16px 0}
+.door{border:none;border-radius:20px;padding:22px 10px;font-size:1.15rem;font-weight:700;cursor:pointer;color:#fff;background:var(--pink)}
+.door.two{background:#2f9e5b}
+.door small{display:block;font-weight:400;opacity:.92;margin-top:4px;font-size:.8rem}
+.cta{text-align:center}
+.door.three{background:#d9822b}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 12px}
+.chk{display:flex;gap:8px;align-items:flex-start;color:var(--ink)}.chk input{width:auto;margin-top:4px}
+</style>
+</head>
+<body>
+<main>
+<header><h1> UCHUMI</h1>
+<nav><button id="t_home" class="on">Home</button> <button id="t_member">My account</button> <button id="t_invest">Invest</button> <button id="t_loans">Loans</button> <button id="t_admin">Admin</button></nav></header>
+
+<section id="home" class="cta">
+ <div class="scene">
+ <svg viewBox="0 0 700 420" role="img" aria-label="A big tree with people harvesting golden fruit">
+  <defs><symbol id="ppl" viewBox="0 0 44 82" overflow="visible">
+   <rect x="12" y="28" width="20" height="30" rx="7" fill="var(--sh,#e8588d)"/>
+   <rect x="13" y="56" width="7" height="22" rx="3" fill="#3b3b5c"/><rect x="24" y="56" width="7" height="22" rx="3" fill="#3b3b5c"/>
+   <path d="M30 32 L40 8" stroke="var(--sh,#e8588d)" stroke-width="6" stroke-linecap="round"/><circle cx="40" cy="7" r="3.5" fill="#ffe3cf"/>
+   <path d="M14 34 L8 50" stroke="var(--sh,#e8588d)" stroke-width="6" stroke-linecap="round"/>
+   <circle cx="22" cy="16" r="12" fill="#ffe3cf"/>
+   <path d="M9 17C8 0 36 0 35 17 30 8 14 8 9 17z" fill="currentColor"/>
+   <circle cx="18" cy="18" r="2" fill="#2b1d2a"/><circle cx="27" cy="18" r="2" fill="#2b1d2a"/></symbol></defs>
+  <ellipse cx="350" cy="395" rx="340" ry="28" fill="#7bc96f"/>
+  <path d="M318 395C330 310 326 250 308 200H392C374 250 370 310 382 395Z" fill="#8b5a2b"/>
+  <g class="canopy" fill="#3f9e48"><circle cx="350" cy="135" r="112"/><circle cx="245" cy="175" r="82"/><circle cx="455" cy="175" r="82"/><circle cx="290" cy="88" r="70" fill="#4caf50"/><circle cx="410" cy="88" r="70" fill="#4caf50"/></g>
+  <g><circle class="fruit" cx="300" cy="120" r="11"/><circle class="fruit" cx="360" cy="80" r="11" style="animation-delay:.4s"/><circle class="fruit" cx="410" cy="140" r="11" style="animation-delay:.8s"/><circle class="fruit" cx="250" cy="180" r="11" style="animation-delay:1.2s"/><circle class="fruit" cx="460" cy="190" r="11" style="animation-delay:1.6s"/><circle class="fruit" cx="350" cy="170" r="11" style="animation-delay:2s"/><circle class="fruit" cx="205" cy="150" r="11" style="animation-delay:.6s"/><circle class="fruit" cx="500" cy="150" r="11" style="animation-delay:1s"/></g>
+  <circle class="fruit drop" cx="270" cy="205" r="9"/><circle class="fruit drop" cx="440" cy="215" r="9" style="animation-delay:2s"/>
+  <use class="pick" href="#ppl" x="215" y="305" width="50" height="92" style="color:#7b4bd1;--sh:#e8588d"/>
+  <use class="pick" href="#ppl" x="440" y="305" width="50" height="92" style="color:#2b6cb0;--sh:#2f9e5b;animation-delay:.7s"/>
+  <use class="pick" href="#ppl" x="90" y="315" width="46" height="86" style="color:#d9467a;--sh:#f0a030;animation-delay:1.2s"/>
+  <use class="pick" href="#ppl" x="570" y="315" width="46" height="86" style="color:#2b1d2a;--sh:#7b4bd1;animation-delay:.3s"/>
+  <g><ellipse cx="190" cy="395" rx="26" ry="9" fill="#a9743a"/><circle cx="182" cy="388" r="7" fill="#ffc83d"/><circle cx="196" cy="388" r="7" fill="#ffc83d"/><ellipse cx="525" cy="395" rx="26" ry="9" fill="#a9743a"/><circle cx="518" cy="388" r="7" fill="#ffc83d"/><circle cx="532" cy="388" r="7" fill="#ffc83d"/></g>
+ </svg></div>
+ <h2 style="color:var(--pink);margin:16px 0 4px">Plant today. Harvest with patience.</h2>
+ <p style="color:var(--mute);margin:0">Invest steadily with Uchumi Sacco and watch your investments grow season by season.</p>
+ <div class="doors">
+  <button class="door" id="go_m"> My account<small>See your balance and growth</small></button>
+  <button class="door two" id="go_i">🌱 Invest<small>Start saving from KSh 200</small></button>
+  <button class="door three" id="go_l">💰 Loans<small>Borrow after you invest</small></button>
+ </div>
+ <p class="note">TRUST US TODAY AND WE PROMISE TO MAKE YOU PROUD TOMMOROW.</p>
+</section>
+
+<section id="invest" class="hide">
+ <div class="card"><b>Invest with Uchumi Sacco</b>
+  <p class="note">Estimates only. Dividends are declared by the SACCO and are not guaranteed.</p>
+  <label for="ia">Amount (KSh 200–30,000)</label><input id="ia" type="number" min="200" max="30000" value="5000">
+  <label for="im">Period</label><select id="im"><option value="1">1 months</option><option value="2">2 months</option><option value="3">3 months</option><option value="4">4 months</option><option value="5">5 months</option><option value="6">6 months</option><option value="7">7 months</option><option value="8">8 months</option><option value="9">9 months</option><option value="10">10 months</option><option value="11">11 months</option><option value="12">12 months</option></select>
+  <p id="iout"></p></div>
+ <div class="card"><b>3 steps to start</b>
+  <ol><li>Register below to get your member number.</li>
+  <li>On M-Pesa go to Lipa na M-Pesa, then Pay Bill. Business no: <b id="ipb"></b>. Account no: your member number.</li>
+  <li>The admin confirms your M-Pesa code and the deposit appears in My account.</li></ol>
+  </div>
+ <div class="card"><b>Register as a member</b>
+  <div class="row"><div><label for="rn">Full name (as on ID)</label><input id="rn"></div>
+  <div><label for="rp">Phone number</label><input id="rp" inputmode="tel" placeholder="07XXXXXXXX"></div>
+  <div><label for="rid">National ID number</label><input id="rid" inputmode="numeric" maxlength="13"></div></div>
+  <button class="btn" id="radd">Register</button> <span id="rmsg" class="note"></span></div>
+</section>
+
+<section id="member" class="hide">
+ <div class="card hero">
+  <svg class="mascot" width="90" height="90" viewBox="0 0 100 100" aria-hidden="true">
+   <path d="M14 55C10 20 35 6 50 6s40 14 36 49c-6-14-12-22-36-22S20 41 14 55z" fill="#7b4bd1"/>
+   <ellipse cx="50" cy="58" rx="30" ry="32" fill="#ffe3cf"/>
+   <path d="M20 50C28 24 72 24 80 50 66 38 34 38 20 50z" fill="#7b4bd1"/>
+   <g class="blink"><ellipse cx="38" cy="60" rx="6" ry="8" fill="#2b1d2a"/><ellipse cx="62" cy="60" rx="6" ry="8" fill="#2b1d2a"/>
+   <circle cx="36" cy="57" r="2.4" fill="#fff"/><circle cx="60" cy="57" r="2.4" fill="#fff"/></g>
+   <ellipse cx="28" cy="72" rx="6" ry="3.5" fill="#ff9db8" opacity=".7"/><ellipse cx="72" cy="72" rx="6" ry="3.5" fill="#ff9db8" opacity=".7"/>
+   <path d="M43 77q7 6 14 0" stroke="#c0394f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+   <circle cx="80" cy="30" r="6" fill="#ff7aa9"/></svg>
+  <div class="bubble" id="say">Welcome! Sign in below to see your account.</div>
+ </div>
+ <div class="card"><b>Sign in to your account</b>
+  <div class="row"><div><label for="lm">Member number</label><input id="lm" placeholder="e.g. M001"></div>
+  <div><label for="lp">Phone number</label><input id="lp" inputmode="tel" placeholder="07XXXXXXXX"></div></div>
+  <button class="btn" id="lgo">View my account</button> <button class="btn hide" id="lout">Sign out</button>
+  <select id="who" class="hide" aria-hidden="true"></select></div>
+ <div id="dash"></div>
+ <div class="card">
+  <div class="card"><b>Withdraw funds</b>
+    <div class="row"><div><label for="2m">phone number</label><input id="2m" placeholder="e.g.07xxxxxxxx"></input></div></div>
+    <button class="btn"id="1go">Submit number</button>
+    <div class="row"></div><label for="2m">Enter prompt to confirm your phone number and be patient as we load  the payments</label><input id="2m"place holder="e.g.*****"></div>
+    <button class="btn"id="1go">confirm prompt</button>
+    <div></div>
+  <b>How to deposit (M-Pesa Paybill)</b>
+  <p>Go to M-Pesa → Lipa na M-Pesa → Pay Bill.<br>Business no: <b id="pb"></b><br>Account no: <b id="acc"></b></p>
+  <p class="note">Deposits between KSh 200 and KSh 30,000 per transaction. Your balance updates once the admin confirms your M-Pesa message.</p>
+  <!-- PAYBILL INTEGRATION GOES HERE:
+       Connect Safaricom Daraja (C2B) in your own backend. Register a confirmation URL,
+       receive the payment callback, verify it, then add the deposit to the member's record
+       in your database. Never trust payment data sent from the browser. -->
+ </div>
+</section>
+
+<section id="loans" class="hide">
+ <div class="card"><b>Loans</b>
+  <p class="note" id="lrules"></p>
+  <p class="note">You must have made at least one deposit before you can borrow. Approval is not automatic; the SACCO decides each application.</p></div>
+ <div class="card"><b>Loan application</b>
+  <div class="row">
+   <div><label for="f_mid">Member number</label><input id="f_mid"></div>
+   <div><label for="f_ph">Registered phone</label><input id="f_ph" inputmode="tel"></div>
+   <div><label for="f_nm">Full name (as on ID)</label><input id="f_nm"></div>
+   <div><label for="f_id">National ID number</label><input id="f_id" inputmode="numeric" maxlength="13"></div>
+   <div><label for="f_job">Occupation, employer or business</label><input id="f_job"></div>
+   <div><label for="f_inc">Monthly income (KSh)</label><input id="f_inc" type="number" min="0"></div>
+   <div><label for="f_res">Residence (town / estate)</label><input id="f_res"></div>
+   <div><label for="f_amt">Loan amount (KSh)</label><input id="f_amt" type="number" min="200"></div>
+   <div><label for="f_mo">Repayment period (months)</label><select id="f_mo"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select></div>
+   <div><label for="f_pu">Purpose</label><select id="f_pu"><option>Business</option><option>School fees</option><option>Emergency</option><option>Farming</option><option>Home improvement</option><option>Other</option></select></div>
+  </div>
+  <b>Next of kin</b>
+  <div class="row"><div><label for="f_kn">Name</label><input id="f_kn"></div><div><label for="f_kp">Phone</label><input id="f_kp" inputmode="tel"></div></div>
+  <b>Guarantor (another SACCO member who has deposited)</b>
+  <div class="row"><div><label for="f_gm">Member number</label><input id="f_gm"></div><div><label for="f_gn">Name</label><input id="f_gn"></div><div><label for="f_gp">Phone</label><input id="f_gp" inputmode="tel"></div></div>
+  <p id="f_est" class="note"></p>
+  <label class="chk"><input type="checkbox" id="f_ok"> <span>I confirm these details are true and I authorise the SACCO to verify them.</span></label>
+  <button class="btn" id="f_go">Submit application</button> <span id="f_msg" class="note"></span></div>
+</section>
+
+<section id="admin" class="hide">
+ <div id="lock" class="card"><label for="pin">Admin PIN</label><input id="pin" type="password" inputmode="numeric"><button class="btn" id="unlock">Unlock</button></div>
+ <div id="panel" class="hide">
+  <div class="card"><b>Record a deposit</b><br>
+   <label>Member</label><select id="dm"></select>
+   <label>Amount (KSh 200–30,000)</label><input id="da" type="number" min="200" max="30000">
+   <label>M-Pesa code</label><input id="dr" placeholder="e.g. SHK4X7Y2AB">
+   <button class="btn" id="dadd">Add deposit</button> <span id="dmsg" class="note"></span></div>
+  <div class="card"><b>Add member</b><br>
+   <label>Full name</label><input id="nn"><label>Phone</label><input id="np" inputmode="tel">
+   <button class="btn" id="nadd">Add member</button></div>
+  <div class="card"><b>Settings</b><br>
+   <label>monthly dividend rate (%) – set to what your SACCO actually declares</label><input id="rate" type="number" step="0.1" min="0" max="30">
+   <label>Paybill number</label><input id="pbn">
+   <button class="btn" id="save">Save settings</button></div>
+  <div class="card"><b>Loan settings</b><br>
+   <label for="lrate">Loan interest (% a month, reducing balance)</label><input id="lrate" type="number" step="0.5" min="0" max="60">
+   <label for="lmult">Borrowing limit (× member deposits)</label><input id="lmult" type="number" step="0.5" min="1" max="10">
+   <button class="btn" id="lsave">Save loan settings</button></div>
+  <div class="card scroll"><b>Loan applications</b><div id="aloans"></div></div>
+  <p class="note">Prototype: data is stored in the database
+  </p>
+ </div>
+</section>
+</main>
+<script>
+const KEY="sacco_v1";
+const day=86400000, today=()=>Math.floor(Date.now()/day);
+const ago=n=>today()-n;
+let S={rate:12,paybill:"000000",members:[{id:"M001",name:"Amani Wanjiru",phone:"0700000000",tx:[{d:ago(30),amt:5000,ref:"ACC0001"},{d:ago(10),amt:2000,ref:"ACC0002"}]}]};
+try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
+S.loans=S.loans||[];S.loanRate=S.loanRate||12;S.loanMult=S.loanMult||3;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const kes=n=>"KSh "+n.toLocaleString("en-KE",{maximumFractionDigits:2});
+
+// daily compounding at the declared annual rate
+function series(m){
+  if(!m.tx.length)return[];
+  const tx=[...m.tx].sort((a,b)=>a.d-b.d), start=tx[0].d, out=[];
+  let bal=0,i=0,g=Math.pow(1+S.rate/100,month);
+  for(let d=start;d<=today();d++){
+    if(d>start)bal*=g;
+    while(i<tx.length&&tx[i].d===d)bal+=tx[i++].amt;
+    out.push(bal);
+  }
+  return out;
+}
+function chart(s){
+  if(s.length<2)return"<p class='note'>Your growth chart appears after your first day.</p>";
+  const W=600,H=180,max=Math.max(...s)*1.05,min=Math.min(...s)*.95;
+  const pts=s.map((v,i)=>(i/(s.length-1)*W).toFixed(1)+","+(H-(v-min)/(max-min||1)*H).toFixed(1));
+  return `<svg viewBox="0 0 ${W} ${H+4}" width="100%" role="img" aria-label="Balance over time"><polygon points="0,${H} ${pts.join(" ")} ${W},${H}" fill="var(--pink2)"/><polyline points="${pts.join(" ")}" fill="none" stroke="var(--pink)" stroke-width="3" stroke-linejoin="round"/></svg>`;
+}
+function fillSelects(){
+  const o=S.members.map(m=>`<option value="${esc(m.id)}">${esc(m.name)} (${esc(m.id)})</option>`).join("");
+  const a=$("who").value,b=$("dm").value;$("who").innerHTML=o;$("dm").innerHTML=o;
+  if(a)$("who").value=a;if(b)$("dm").value=b;
+}
+function render(){
+  const m=S.members.find(x=>x.id===cur);
+  $("pb").textContent=S.paybill;
+  if(!m){$("dash").innerHTML="";return}
+  $("acc").textContent=m.id;
+  const s=series(m),bal=s.length?s[s.length-1]:0,dep=m.tx.reduce((t,x)=>t+x.amt,0),gain=bal-dep;
+  $("dash").innerHTML=`<div class="grid">
+   <div class="card stat"><small>Balance</small><b>${kes(bal)}</b></div>
+   <div class="card stat"><small>Total deposited</small><b>${kes(dep)}</b></div>
+   <div class="card stat"><small>Dividends earned</small><b class="ok">${kes(gain)}</b></div>
+   <div class="card stat"><small>Declared rate</small><b>${S.rate}% p.a.</b></div></div>
+   <div class="card"><b>Growth</b>${chart(s)}</div>
+   <div class="card scroll"><b>Deposits</b><table><tr><th>Date</th><th>Amount</th><th>M-Pesa code</th></tr>${[...m.tx].reverse().map(x=>`<tr><td>${new Date(x.d*day).toLocaleDateString("en-KE")}</td><td>${kes(x.amt)}</td><td>${esc(x.ref)}</td></tr>`).join("")}</table></div>${loanCard(m)}`;
+  $("say").textContent=gain>0?`Nice, ${m.name.split(" ")[0]}! Steady saving grows your money.`:"Make your first deposit to start earning!";
+}
+function calc(){
+  const a=Number($("ia").value),mo=Number($("im").value),out=$("iout");
+  $("ipb").textContent=S.paybill;
+  if(!(a>=200&&a<=30000)){out.textContent="Enter an amount between KSh 200 and KSh 30,000.";return}
+  const v=a*Math.pow(1+S.rate/100,mo/50);
+  out.innerHTML=`Estimated value after ${mo} months at ${S.rate}% a month: <b>${kes(v)}</b> (about ${kes(v-a)} in dividends)`;
+}
+function tab(n){
+  ["home","member","invest","loans","admin"].forEach(k=>{$(k).classList.toggle("hide",k!==n);$("t_"+k).classList.toggle("on",k===n)});
+  if(n==="invest")calc();
+  if(n==="loans"){lrules();est()}
+  window.scrollTo(0,0);
+}
+["home","member","invest","loans","admin"].forEach(k=>$("t_"+k).onclick=()=>tab(k));
+$("go_m").onclick=()=>tab("member");$("go_l").onclick=()=>tab("loans");
+let cur=null;
+$("lgo").onclick=()=>{const m=S.members.find(x=>x.id===$("lm").value.trim().toUpperCase());
+  if(!m||m.phone!==$("lp").value.trim()){$("lmsg").textContent="Member number and phone do not match.";return}
+  cur=m.id;$("lmsg").textContent="";$("lout").classList.remove("hide");render()};
+$("lout").onclick=()=>{cur=null;$("lp").value="";$("lout").classList.add("hide");render()};
+$("radd").onclick=()=>{const g=i=>$(i).value.trim(),msg=t=>{$("rmsg").textContent=t};
+  if(!g("rn"))return msg("Enter your full name.");
+  if(!/^(07|01)\d{8}$/.test(g("rp")))return msg("Enter a valid phone number (07XXXXXXXX).");
+  if(!/^\d{7,13}$/.test(g("rid")))return msg("Enter a valid national ID (7 or 13 digits).");
+  if(S.members.some(x=>x.phone===g("rp")||x.nid===g("rid")))return msg("You are already registered. Use your member number.");
+  const id="M"+String(S.members.length+1).padStart(3,"0");
+  S.members.push({id,name:g("rn"),phone:g("rp"),nid:g("rid"),tx:[]});save();fillSelects();
+  msg(`Registered ✓ Your member number is ${id}. Use it as the account number when you pay.`)};
+const dep=m=>m.tx.reduce((t,x)=>t+x.amt,0);
+const pay=(P,mo)=>{const r=S.loanRate/1200;return r?P*r/(1-Math.pow(1+r,-mo)):P/mo};
+function est(){const a=Number($("f_amt").value),mo=Number($("f_mo").value);$("f_est").textContent=a>=1000?`Estimated monthly repayment: ${kes(pay(a,mo))} (total ${kes(pay(a,mo)*mo)})`:""}
+function lrules(){$("lrules").textContent=`Borrow from KSh 1,000 up to ${S.loanMult}× your total deposits. Interest: ${S.loanRate}% a month on the reducing balance.`}
+$("f_amt").oninput=$("f_mo").onchange=est;
+function loanCard(m){const l=S.loans.filter(x=>x.mid===m.id);if(!l.length)return"";
+  return `<div class="card scroll"><b>My loans</b><table><tr><th>No.</th><th>Amount</th><th>Months</th><th>Status</th></tr>${l.map(x=>`<tr><td>${esc(x.no)}</td><td>${kes(x.amt)}</td><td>${x.months}</td><td><b>${esc(x.status)}</b></td></tr>`).join("")}</table></div>`}
+$("f_go").onclick=()=>{
+  const g=i=>$(i).value.trim(),msg=t=>{$("f_msg").textContent=t},ph=/^(07|01)\d{8}$/;
+  const m=S.members.find(x=>x.id===g("f_mid").toUpperCase());
+  if(!m)return msg("Member number not found. Register first on the Invest page.");
+  if(m.phone!==g("f_ph"))return msg("Phone does not match the registered phone.");
+  if(!m.tx.length)return msg("You must invest at least once before you can borrow.");
+  if(!/^\d{7,13}$/.test(g("f_id")))return msg("Enter a valid national ID (7 or 13 digits).");
+  if(!g("f_nm")||!g("f_job")||!g("f_res")||!g("f_kn")||!g("f_gn"))return msg("Please fill in all the details.");
+  const inc=Number(g("f_inc")),amt=Number(g("f_amt")),mo=Number(g("f_mo")),lim=dep(m)*S.loanMult;
+  if(!(inc>0))return msg("Enter your monthly income.");
+  if(!ph.test(g("f_kp"))||!ph.test(g("f_gp")))return msg("Enter valid phone numbers (07XXXXXXXX) for next of kin and guarantor.");
+  const gm=S.members.find(x=>x.id===g("f_gm").toUpperCase());
+  if(!gm||gm.id===m.id)return msg("The guarantor must be a different registered member.");
+  if(!gm.tx.length)return msg("Your guarantor must also have made a deposit.");
+  if(!(amt>=1000))return msg("Minimum loan is KSh 1,000.");
+  if(amt>lim)return msg(`Your limit is ${kes(lim)} (${S.loanMult}× your deposits).`);
+  if(pay(amt,mo)>inc*0.5)return msg("Monthly repayment is above half of your income. Reduce the amount or extend the period.");
+  if(S.loans.some(l=>l.mid===m.id&&(l.status==="Pending"||l.status==="Approved")))return msg("You already have a pending or active loan.");
+  if(!$("f_ok").checked)return msg("Please tick the confirmation box.");
+  S.loans.push({no:"L"+String(S.loans.length+1).padStart(3,"0"),mid:m.id,name:g("f_nm"),nid:g("f_id"),phone:m.phone,job:g("f_job"),inc,res:g("f_res"),amt,months:mo,purpose:$("f_pu").value,kin:{n:g("f_kn"),p:g("f_kp")},gar:{m:gm.id,n:g("f_gn"),p:g("f_gp")},d:today(),status:"Pending"});
+  save();msg("Application submitted ✓ The SACCO will review it. Check the status in My account.");
+};
+function adminLoans(){
+  $("aloans").innerHTML=S.loans.length?`<table><tr><th>No.</th><th>Applicant</th><th>Amount</th><th>Status</th><th></th></tr>${[...S.loans].reverse().map(l=>`<tr><td>${esc(l.no)}</td><td>${esc(l.name)}<br><span class="note">${esc(l.mid)} · ID ${esc(l.nid)} · ${esc(l.phone)}<br>${esc(l.job)}, income ${kes(l.inc)}, ${esc(l.res)}<br>${esc(l.purpose)} · ${l.months} months<br>Next of kin: ${esc(l.kin.n)} ${esc(l.kin.p)}<br>Guarantor: ${esc(l.gar.n)} (${esc(l.gar.m)}) ${esc(l.gar.p)}</span></td><td>${kes(l.amt)}</td><td>${esc(l.status)}</td><td>${l.status==="Pending"?`<button class="btn" data-a="Approved" data-n="${esc(l.no)}">Approve</button> <button class="btn" data-a="Rejected" data-n="${esc(l.no)}">Reject</button>`:""}</td></tr>`).join("")}</table>`:"<p class='note'>No applications yet.</p>";
+}
+$("aloans").onclick=e=>{const b=e.target.closest("button");if(!b)return;const l=S.loans.find(x=>x.no===b.dataset.n);if(l){l.status=b.dataset.a;save();adminLoans();render()}};
+$("lsave").onclick=()=>{S.loanRate=Math.min(60,Math.max(0,Number($("lrate").value)||0));S.loanMult=Math.min(10,Math.max(1,Number($("lmult").value)||3));save();lrules();est()};
+$("go_i").onclick=()=>tab("invest");
+$("ia").oninput=calc;$("im").onchange=calc;
+$("who").onchange=render;
+$("unlock").onclick=()=>{ // 
+  if($("pin").value==="9114"){$("lock").classList.add("hide");$("panel").classList.remove("hide");$("rate").value=S.rate;$("pbn").value=S.paybill;$("lrate").value=S.loanRate;$("lmult").value=S.loanMult;adminLoans()}else alert("Wrong PIN")};
+$("dadd").onclick=()=>{
+  const amt=Number($("da").value),ref=$("dr").value.trim().toUpperCase(),m=S.members.find(x=>x.id===$("dm").value);
+  if(!m||!(amt>=300&&amt<=30000)){$("dmsg").textContent="Amount must be 300–30,000.";return}
+  if(!ref){$("dmsg").textContent="Enter the M-Pesa code.";return}
+  if(S.members.some(x=>x.tx.some(t=>t.ref===ref))){$("dmsg").textContent="That code was already recorded.";return}
+  m.tx.push({d:today(),amt,ref});save();$("da").value="";$("dr").value="";$("dmsg").textContent="Recorded ✓";render();
+};
+$("nadd").onclick=()=>{
+  const n=$("nn").value.trim();if(!n)return;
+  S.members.push({id:"M"+String(S.members.length+1).padStart(3,"0"),name:n,phone:$("np").value.trim(),tx:[]});
+  save();$("nn").value="";$("np").value="";fillSelects();render();
+};
+$("save").onclick=()=>{S.rate=Math.min(30,Math.max(0,Number($("rate").value)||0));S.paybill=$("pbn").value.trim()||"000000";save();render()};
+const money=["💵","💰","🪙","💵","💸"];
+for(let i=0;i<18;i++){const p=document.createElement("div");p.className="petal";p.textContent=money[i%money.length];p.setAttribute("aria-hidden","true");p.style.fontSize=(18+Math.random()*14)+"px";p.style.left=Math.random()*100+"vw";p.style.animationDuration=(8+Math.random()*8)+"s";p.style.animationDelay=(-Math.random()*10)+"s";document.body.appendChild(p)}
+fillSelects();render();
+</script>
+</body>
+</html>
